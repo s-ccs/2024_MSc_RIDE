@@ -24,3 +24,4 @@ docs/site/
 Manifest.toml
 
 /.vscode/
+/simulated_data.h5
