@@ -26,6 +26,8 @@ using DataFramesMeta
 using Statistics
 using DSP
 
+
+include("plotting_methods.jl")
 include("helper_methods.jl")
 
 sfreq = 100
@@ -141,10 +143,6 @@ function UnfoldSim.simulate_onsets(rng, onset::MultiOnset, simulation::Simulatio
 end
 
 components = Dict('S' => [p1, n1], 'C' => [n4], 'R' => [p3])
-onset2 = UniformOnset(
-    width = 0,
-    offset = 60,
-)
 data, evts = simulate(
     RandomDevice(),
     sequenceDesign,
@@ -268,21 +266,33 @@ for i in 1:5
     #inner iteration RIDE
     for j in 1:25
         #calculate erp of C by subtracting S and R from the data
-        global c_erp_temp = subtract_to_erp(data_reshaped, evts_c, cfg.c_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_r, r_erp_temp, cfg.r_range)])
+        global c_erp_temp = subtract_to_erp(data_reshaped, evts_c, cfg.c_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_r, r_erp_temp, cfg.r_range)], cfg.sfreq)
         #calculate erp of S
-        global s_erp_temp = subtract_to_erp(data_reshaped, evts_s, cfg.s_range, [(evts_c, c_erp_temp, cfg.c_range), (evts_r, r_erp_temp, cfg.r_range)])
+        global s_erp_temp = subtract_to_erp(data_reshaped, evts_s, cfg.s_range, [(evts_c, c_erp_temp, cfg.c_range), (evts_r, r_erp_temp, cfg.r_range)], cfg.sfreq)
         #calculate erp of R
-        global r_erp_temp = subtract_to_erp(data_reshaped, evts_r, cfg.r_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_c, c_erp_temp, cfg.c_range)])
+        global r_erp_temp = subtract_to_erp(data_reshaped, evts_r, cfg.r_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_c, c_erp_temp, cfg.c_range)], cfg.sfreq)
     end
     
     push!(figures_erp, plot_data_plus_component_erp())
 
-    data_epoched_subtracted_s_and_r = data_epoched
-    #data_epoched_subtracted_s_and_r = subtract_to_data_epoched(data_reshaped, evts_s, cfg.epoch_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_r, r_erp_temp, cfg.r_range)])
+    if 1 == 1
+        #pattern matching on the original data to update the c latencies
+        global xc, m = findxcorrpeak(data_epoched[1,:,:],c_erp_temp[1,:,1])
+    else 
+        #perform the pattern matching on the data with the S and R components subtracted
+        #this should help avoid false positive matches on the S or R component
+        #this is different from the original RIDE algorithm
+        data_subtracted_s_and_r = subtract_to_data(data_reshaped, [(evts_s, s_erp_temp, cfg.s_range), (evts_r, r_erp_temp, cfg.r_range)], cfg.sfreq)
+        data_epoched_subtracted_s_and_r, n = Unfold.epoch(data = data_subtracted_s_and_r, tbl = evts_s, τ = cfg.epoch_range, sfreq = cfg.sfreq)
+        n, data_epoched_subtracted_s_and_r = Unfold.drop_missing_epochs(evts_s, data_epoched_subtracted_s_and_r)
+        global xc, m = findxcorrpeak(data_epoched_subtracted_s_and_r[1,:,:],c_erp_temp[1,:,1])
+    end
+    
+   
+    
     #new_erp = median(data_epoched_subtracted_s_and_r, dims = 3)
     #pattern matching to update the c latencies
-    global xc, m = findxcorrpeak(data_epoched_subtracted_s_and_r[1,:,:],c_erp_temp[1,:,1])
-    @show global c_latencies = reshape(m .- round(Int,  (cfg.c_range[1] * cfg.sfreq)), (1,:))
+    global c_latencies = reshape(m .- round(Int,  (cfg.c_range[1] * cfg.sfreq)), (1,:))
     global evts_c = copy(evts_s)
     global evts_c[!,:latency] .= round.(Int, evts_s[!,:latency] + c_latencies[1,:] .+ (cfg.epoch_range[1]*sfreq))
     global evts_c[!,:event] .= 'C'
