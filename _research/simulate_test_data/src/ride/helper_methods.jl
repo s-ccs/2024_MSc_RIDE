@@ -1,4 +1,5 @@
 function pad_erp_to_epoch_size(erp, component_range, median_latency, cfg)
+    epoch_length = round(Int, (cfg.epoch_range[2] - cfg.epoch_range[1]) * cfg.sfreq)
     padding_front = zeros(Float64, 1, max(round(Int, median_latency + (component_range[1] * cfg.sfreq) - (cfg.epoch_range[1] * cfg.sfreq)), 0), 1)
     padding_back = zeros(Float64, 1, max(epoch_length - size(padding_front, 2) - size(erp, 2), 0), 1) 
     return hcat(padding_front, erp, padding_back)
@@ -29,7 +30,7 @@ function findxcorrpeak(d,kernel;window=false)
 	weightedkernel = window ? kernel .*  hanning(length(kernel)) : kernel
 	xc = xcorr.(eachcol(d),Ref(weightedkernel); padmode = :none)
 	m = [findmax(x)[2] for x in xc] .- (length(kernel))
-	return xc,m
+	return xc, m
 end
 
 
@@ -54,7 +55,7 @@ if 1 == 1
     display(f)
     using Test
     @test findxcorrpeak(d,kernel)[2] == [30]
-    @test findxcorrpeak(d,kernel;window=false)[2] == [30]
+    @test findxcorrpeak(d,kernel;window=true)[2] == [30]
 end
 
 function createTestData()
@@ -81,7 +82,7 @@ function createTestData()
     return data, evts
 end
 
-if 1 == 1
+if 1 == 0
     sfreq = 100
 
     data = reshape(vcat(zeros(100), hanning(100), zeros(100), hanning(100), zeros(100)), (1,:))
@@ -101,7 +102,7 @@ if 1 == 1
     @test result_zero[1,:] == zeros(length(result_zero[1,:]))
 end
 
-if 1 == 1
+if 1 == 0
     sfreq = 100
     data, evts = createTestData()
     range_test = [0.0, 1.0]

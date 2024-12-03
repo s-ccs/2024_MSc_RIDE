@@ -1,4 +1,4 @@
-function plot_c_latency_estimation_four_epochs()
+function plot_c_latency_estimation_four_epochs(data_epoched, c_latencies)
     #plotting the estimated c latencies on a couple of epochs
     f = Figure()
     for a in 1:2, b in 1:2; 
@@ -10,7 +10,7 @@ function plot_c_latency_estimation_four_epochs()
     return f
 end
 
-function plot_first_epoch()
+function plot_first_epoch(cfg, evts_s, evts_r, evts_c, data_reshaped)
     #plot one epoch of the entire epoch window, then one epoch of S,R and C
     f = Figure()
     Axis(f[1,1],title = "data_epoched")
@@ -28,7 +28,7 @@ function plot_first_epoch()
     display(f)
 end
 
-function plot_data_plus_component_erp()
+function plot_data_plus_component_erp(data_epoched, evts_s, evts_r, s_erp_temp, r_erp_temp, c_erp_temp, c_latencies, cfg)
     s_erp_padded = pad_erp_to_epoch_size(s_erp_temp, cfg.s_range, 0, cfg)
 
     #calculate the median latency of R from S onset
