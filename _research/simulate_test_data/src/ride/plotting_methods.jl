@@ -1,6 +1,7 @@
 function plot_c_latency_estimation_four_epochs(data_epoched, c_latencies)
     #plotting the estimated c latencies on a couple of epochs
     f = Figure()
+    #c_latency_offset = round(Int, ((cfg.c_range[2] - cfg.c_range[1]) * cfg.sfreq) / 2);
     for a in 1:2, b in 1:2; 
         i = (a-1)*2 + b
         Axis(f[a,b],title = "Estimated C latency epoch $i")
@@ -39,10 +40,10 @@ function plot_data_plus_component_erp(data_epoched, evts_s, evts_r, s_erp_temp, 
     
     c_median_latency = round(Int, median(c_latencies) + (cfg.epoch_range[1] * cfg.sfreq))
     c_erp_padded = pad_erp_to_epoch_size(c_erp_temp, cfg.c_range, c_median_latency, cfg)
-    raw_erp = median(data_epoched, dims = 3)
+    raw_erp = mean(data_epoched, dims = 3)
     
     f = Figure()
-    Axis(f[1,0])
+    Axis(f[1,0], yticks = -100:100)
     raw = lines!(raw_erp[1,:,1]; color = "black", linewidth = 3)
     s = lines!(s_erp_padded[1,:,1]; color = "red")
     r = lines!(r_erp_padded[1,:,1]; color = "blue")

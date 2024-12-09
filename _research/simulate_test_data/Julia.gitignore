@@ -23,5 +23,5 @@ docs/site/
 # environment.
 Manifest.toml
 
-/.vscode/*
-/simulated_data.h5
+.vscode/**/*
+simulated_data.h5

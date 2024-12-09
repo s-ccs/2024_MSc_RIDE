@@ -26,13 +26,13 @@ end
 #function simulate_default_run_once()
     #simulate data
     sequence_design, components, multi_onset = default_sequence_design()
-    rng = MersenneTwister(1234)
+    rng = MersenneTwister(1234) #1234
     data, evts = simulate(
         rng,
         sequence_design,
         components,
         multi_onset,
-        PinkNoise(),
+        #PinkNoise(),
     )
 
     plot_first_three_epochs_of_raw_data(data, evts);
@@ -40,13 +40,12 @@ end
     #config for ride algorithm
     cfg = ride_config(
         sfreq = 100,
-        s_range = [-0.2, 0.3],
+        s_range = [-0.2, 0.4],
         r_range = [0, 0.8],
         c_range = [-0.4, 0.4], # change to -0.4 , 0.4 or something because it's attached to the latency of C
         c_estimation_range = [0.2, 1.0],
         epoch_range = [-0.3,1.6],
-        epoch_event_name = 'S',
-        residue_matching = true
+        epoch_event_name = 'S'
     )
 
     save_to_hdf5_ride_format(data, evts, cfg.epoch_range, cfg.epoch_event_name, 'R', cfg.sfreq)

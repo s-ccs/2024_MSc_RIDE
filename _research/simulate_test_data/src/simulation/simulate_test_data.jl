@@ -64,7 +64,7 @@ function default_sequence_design()
     n4 = LinearModelComponent(;
         basis = p100(),
         formula = @formula(0 ~ 1), 
-        β = [-5],
+        β = [5],
     );
 
     onsetStimulus = UniformOnset(
