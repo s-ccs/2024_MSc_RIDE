@@ -1,18 +1,3 @@
-
-#import Pkg
-#Pkg.add("CairoMakie")
-#Pkg.add("Random")
-#Pkg.add("Unfold")
-#Pkg.add("UnfoldMakie")
-#Pkg.add("StableRNGs")
-#Pkg.add("Parameters")
-#Pkg.add("HDF5")
-#Pkg.add("DataFrames")
-#Pkg.add("DataFramesMeta")
-#Pkg.add([
-#    Pkg.PackageSpec(url="https://github.com/unfoldtoolbox/UnfoldSim.jl.git", rev="v4.0")
-#])
-
 using UnfoldSim
 using CairoMakie
 using Random
@@ -31,7 +16,57 @@ using DSP
     component_to_stimulus_onsets::Vector{AbstractOnset}
 end
 
-function default_sequence_design(s_width = 0, s_offset = 200, s_beta = 1 , c_width = 30, c_offset = 30, c_beta = 5, r_width = 60, r_offset = 15, r_beta = 5, continous_s = 1, continous_r = 1)
+@with_kw mutable struct simulation_inputs
+    rng::AbstractRNG = MersenneTwister(1234)
+    noise::AbstractNoise = NoNoise()
+    s_width::Int = 0
+    s_offset::Int = 200
+    s_beta::Int = 1
+    s_continous::Int = 1
+    c_width::Int = 30
+    c_offset::Int = 30
+    c_beta::Int = 5
+    r_width::Int = 60
+    r_offset::Int = 15
+    r_beta::Int = 5
+    r_continous::Int = 1
+end
+
+function simulate_default_plus_clean(simulation_inputs = simulation_inputs())
+    data, evts = default_sequence_design(simulation_inputs)
+
+    clean_inputs = deepcopy(simulation_inputs)
+    clean_inputs.s_offset = clean_inputs.s_offset + Int(round(clean_inputs.s_width / 2))
+    clean_inputs.s_width = 0
+    @show clean_inputs.r_offset = clean_inputs.r_offset + Int(round(clean_inputs.r_width / 2))
+    clean_inputs.r_width = 0
+    clean_inputs.c_offset = clean_inputs.c_offset + Int(round(clean_inputs.c_width / 2))
+    clean_inputs.c_width = 0
+    data_clean, evts_clean = default_sequence_design(clean_inputs)
+
+    s_clean_inputs = deepcopy(clean_inputs)
+    s_clean_inputs.r_beta = 0
+    s_clean_inputs.r_continous = 0
+    s_clean_inputs.c_beta = 0
+    data_clean_s, n = default_sequence_design(s_clean_inputs)
+
+    r_clean_inputs = deepcopy(clean_inputs)
+    r_clean_inputs.s_beta = 0
+    r_clean_inputs.s_continous = 0
+    r_clean_inputs.c_beta = 0
+    data_clean_r, n = default_sequence_design(r_clean_inputs)
+
+    c_clean_inputs = deepcopy(clean_inputs)
+    c_clean_inputs.s_beta = 0
+    c_clean_inputs.s_continous = 0
+    c_clean_inputs.r_beta = 0
+    c_clean_inputs.r_continous = 0
+    data_clean_c, n = default_sequence_design(c_clean_inputs)
+
+    return data, evts, data_clean, evts_clean, data_clean_s, data_clean_r, data_clean_c
+end
+
+function default_sequence_design(simulation_inputs = simulation_inputs())
     # Define the design
     design = SingleSubjectDesign(;
         conditions = Dict(
@@ -43,43 +78,43 @@ function default_sequence_design(s_width = 0, s_offset = 200, s_beta = 1 , c_wid
     sequence_design = SequenceDesign(design, "SCR")
 
     # Define the components
-    p1 = LinearModelComponent(;
+    s_component_p = LinearModelComponent(;
         basis = p100(), 
         formula = @formula(0 ~ 1), 
-        β = [s_beta]
+        β = [simulation_inputs.s_beta]
     );
 
-    n1 = LinearModelComponent(;
+    s_component_n = LinearModelComponent(;
         basis = n170(),
         formula = @formula(0 ~ 1 + condition),
-        β = [s_beta, continous_s],
+        β = [simulation_inputs.s_beta, simulation_inputs.s_continous],
     );
 
-    p3 = LinearModelComponent(;
+    r_component = LinearModelComponent(;
         basis = p300(),
         formula = @formula(0 ~ 1 + continuous),
-        β = [c_beta, continous_r],
+        β = [simulation_inputs.r_beta, simulation_inputs.r_continous],
     );
 
-    n4 = LinearModelComponent(;
+    c_component = LinearModelComponent(;
         basis = p100(),
         formula = @formula(0 ~ 1), 
-        β = [r_beta],
+        β = [simulation_inputs.c_beta],
     );
 
     onsetStimulus = UniformOnset(
-        width = s_width,
-        offset = s_offset,
+        width = simulation_inputs.s_width,
+        offset = simulation_inputs.s_offset,
     )
 
     onsetC = UniformOnset(
-        width = c_width,
-        offset = c_offset,
+        width = simulation_inputs.c_width,
+        offset = simulation_inputs.c_offset,
     )
 
     onsetR = UniformOnset(
-        width = r_width,
-        offset = r_offset,
+        width = simulation_inputs.r_width,
+        offset = simulation_inputs.r_offset,
     )
 
     multi_onset = MultiOnset(
@@ -87,9 +122,17 @@ function default_sequence_design(s_width = 0, s_offset = 200, s_beta = 1 , c_wid
         [onsetC, onsetR],
     )
 
-    components = Dict('S' => [p1, n1], 'C' => [n4], 'R' => [p3])
+    components = Dict('S' => [s_component_p, s_component_n], 'C' => [c_component], 'R' => [r_component])
 
-    return sequence_design, components, multi_onset
+    data, evts = simulate(
+        simulation_inputs.rng,
+        sequence_design,
+        components,
+        multi_onset,
+        simulation_inputs.noise,
+    )
+
+    return data, evts
 end
 
 @with_kw struct DummySizeDesign <: AbstractDesign
