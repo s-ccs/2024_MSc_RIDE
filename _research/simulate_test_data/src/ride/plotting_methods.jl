@@ -19,13 +19,13 @@ function plot_first_epoch(cfg, evts_s, evts_r, evts_c, data_reshaped)
     lines!(f[1,1],data_reshaped[1,epoch_range[1]:epoch_range[2]]; color = "black")
     Axis(f[1,2],title = "data_epoched_s")
     s_range = round.(Int, cfg.s_range .* cfg.sfreq .+ evts_s.latency[1])
-    lines!(f[1,2],data_reshaped[1,s_range[1]:s_range[2]]; color = "red")
+    lines!(f[1,2],data_reshaped[1,s_range[1]:s_range[2]]; color = "blue")
     Axis(f[2,1],title = "data_epoched_r")
     r_range = round.(Int, cfg.r_range .* cfg.sfreq .+ evts_r.latency[1])
-    lines!(f[2,1],data_reshaped[1,r_range[1]:r_range[2]]; color = "blue")
+    lines!(f[2,1],data_reshaped[1,r_range[1]:r_range[2]]; color = "green")
     Axis(f[2,2],title = "data_epoched_c")
     c_range = round.(Int, cfg.c_range .* cfg.sfreq .+ evts_c.latency[1])
-    lines!(f[2,2],data_reshaped[1,c_range[1]:c_range[2]]; color = "green")
+    lines!(f[2,2],data_reshaped[1,c_range[1]:c_range[2]]; color = "red")
     display(f)
 end
 
@@ -45,12 +45,39 @@ function plot_data_plus_component_erp(data_epoched, evts_s, evts_r, s_erp_temp, 
     f = Figure()
     Axis(f[1,0], yticks = -100:100)
     raw = lines!(raw_erp[1,:,1]; color = "black", linewidth = 3)
-    s = lines!(s_erp_padded[1,:,1]; color = "red")
-    r = lines!(r_erp_padded[1,:,1]; color = "blue")
-    c = lines!(c_erp_padded[1,:,1]; color = "green")
+    s = lines!(s_erp_padded[1,:,1]; color = "blue")
+    c = lines!(c_erp_padded[1,:,1]; color = "red")
+    r = lines!(r_erp_padded[1,:,1]; color = "green")
     Legend(f[1,1]
         , [raw, s, r, c]
         , ["Raw ERP", "S ERP", "R ERP", "C ERP"]
     )
     return f
+end
+
+function plot_first_three_epochs_of_raw_data(data, evts)
+    f = Figure()
+    Axis(f[1,1], title = "First three epochs")
+    evts_s = @subset(evts, :event .== 'S')
+    evts_r = @subset(evts, :event .== 'R')
+    graph = lines!(first(vec(data),evts_s.latency[4]); color = "black")
+    graph_r = vlines!(first(evts_r.latency,3), color = "blue")
+    graph_s = vlines!(first(evts_s.latency,3), color = "red")
+    
+    Legend(f[1,2]
+        , [graph, graph_r, graph_s]
+        , ["Data", "Reaction Times", "Stimulus Onsets"]
+    )
+    display(f)
+end
+
+function plot_first_three_epochs_of_raw_data(data)
+    f = Figure()
+    Axis(f[1,1], title = "First 600 data points")
+    graph = lines!(first(vec(data),600); color = "black")    
+    Legend(f[1,2]
+        , [graph]
+        , ["Data"]
+    )
+    display(f)
 end

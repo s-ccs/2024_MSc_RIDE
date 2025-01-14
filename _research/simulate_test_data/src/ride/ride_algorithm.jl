@@ -54,20 +54,19 @@ function ride_algorithm(data, evts, cfg::ride_config)
     evts_c[!,:latency] .= round.(Int, evts_s[!,:latency] + c_latencies[1,:] .+ (cfg.epoch_range[1]*cfg.sfreq))
     evts_c[!,:event] .= 'C'
 
-
     plot_first_epoch(cfg, evts_s, evts_r, evts_c, data_reshaped)
 
-    #epoch data for s
+    #calculate initial  erp of S
     data_epoched_s, data_epoched_s_times = Unfold.epoch(data = data_reshaped, tbl = evts_s, τ = cfg.s_range, sfreq = cfg.sfreq)
     n, data_epoched_s = Unfold.drop_missing_epochs(evts_s, data_epoched_s)
     s_erp_temp = median(data_epoched_s, dims = 3)
 
-    #epoch data for r
+    #calculate initial erp of R
     data_epoched_r, data_epoched_r_times = Unfold.epoch(data = data_reshaped, tbl = evts_r, τ = cfg.r_range, sfreq = cfg.sfreq)
     n, data_epoched_r = Unfold.drop_missing_epochs(evts_r, data_epoched_r)
     r_erp_temp = median(data_epoched_r, dims = 3)
 
-    #prepare data for the ride algorithm
+    #calculate initial erp of C by subtracting S and R from the data
     data_subtracted_s_and_r = subtract_to_data_epoched(data_reshaped, evts_c, cfg.c_range, [(evts_s, s_erp_temp, cfg.s_range), (evts_r, r_erp_temp, cfg.r_range)], cfg.sfreq)
     c_erp_temp = median(data_subtracted_s_and_r, dims = 3)
     
@@ -138,6 +137,7 @@ function ride_algorithm(data, evts, cfg::ride_config)
         Label(f[0, :], text = "Calculated Erp, Iteration $(i-1)")
         display(f)
     end
+    save("ride_erp.png", figures_erp[length(figures_erp)])
 
     return c_latencies, s_erp_temp, c_erp_temp, r_erp_temp
     

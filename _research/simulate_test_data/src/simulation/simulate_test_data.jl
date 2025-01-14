@@ -31,7 +31,7 @@ using DSP
     component_to_stimulus_onsets::Vector{AbstractOnset}
 end
 
-function default_sequence_design()
+function default_sequence_design(s_width = 0, s_offset = 200, s_beta = 1 , c_width = 30, c_offset = 30, c_beta = 5, r_width = 60, r_offset = 15, r_beta = 5, continous_s = 1, continous_r = 1)
     # Define the design
     design = SingleSubjectDesign(;
         conditions = Dict(
@@ -46,40 +46,40 @@ function default_sequence_design()
     p1 = LinearModelComponent(;
         basis = p100(), 
         formula = @formula(0 ~ 1), 
-        β = [1]
+        β = [s_beta]
     );
 
     n1 = LinearModelComponent(;
         basis = n170(),
         formula = @formula(0 ~ 1 + condition),
-        β = [1, 1],
+        β = [s_beta, continous_s],
     );
 
     p3 = LinearModelComponent(;
         basis = p300(),
         formula = @formula(0 ~ 1 + continuous),
-        β = [5, 1],
+        β = [c_beta, continous_r],
     );
 
     n4 = LinearModelComponent(;
         basis = p100(),
         formula = @formula(0 ~ 1), 
-        β = [5],
+        β = [r_beta],
     );
 
     onsetStimulus = UniformOnset(
-        width = 0,
-        offset = 200
+        width = s_width,
+        offset = s_offset,
     )
 
     onsetC = UniformOnset(
-        width = 30,
-        offset = 30,
+        width = c_width,
+        offset = c_offset,
     )
 
     onsetR = UniformOnset(
-        width = 60,
-        offset = 15,
+        width = r_width,
+        offset = r_offset,
     )
 
     multi_onset = MultiOnset(
