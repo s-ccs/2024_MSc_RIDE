@@ -63,8 +63,16 @@ function ride_algorithm_unfold(data, evts, cfg::ride_config)
     data_epoched, data_epoched_times = Unfold.epoch(data = data_reshaped, tbl = evts_s, τ = cfg.epoch_range, sfreq = cfg.sfreq)
     n ,data_epoched = Unfold.drop_missing_epochs(evts_s, data_epoched)
     number_epochs = size(data_epoched, 3)
+    #@assert size(evts) == (number_epochs * 2) "Size of evts is $(size(evts)) but should be $(number_epochs * 2)"
     evts_s = evts_s[1:number_epochs,:]
     evts_r = evts_r[1:number_epochs,:]
+
+    #reduce evts to the number of epochs
+    while size(evts,1) > number_epochs*2
+        deleteat!(evts, size(evts,1))
+    end
+    @assert size(evts,1) == number_epochs*2 "Size of evts is $(size(evts,1)) but should be $(number_epochs*2)"
+
     ##
 
     ## initial unfold deconvolution
@@ -80,9 +88,15 @@ function ride_algorithm_unfold(data, evts, cfg::ride_config)
     ## initial residue calculation (data minus S and R)
     #exclude='C' doesn't seem to do anything. Probably because the model doesn't know what 'C' is. 
     #Evts doesn't contain 'C' at this point.
-    yhat = predict(m,exclude_basis = 'C', overlap = true)
+    yhat = predict(m)
     y = data_reshaped
     residuals_without_SR = Unfold._residuals(UnfoldModel,yhat,y)
+    ##@show size(yhat)
+    ##@show size(y)
+    ##@show size(residuals_without_SR)
+    ##plot_first_three_epochs_of_raw_data(yhat)
+    ##plot_first_three_epochs_of_raw_data(y)
+    ##plot_first_three_epochs_of_raw_data(residuals_without_SR)
     ##
 
     ## initial C latency estimation
@@ -104,8 +118,7 @@ function ride_algorithm_unfold(data, evts, cfg::ride_config)
     ##
 
     ## iteration start
-    iteration_limit = 5
-    for i in range(1,iteration_limit) 
+    for i in range(1,cfg.iteration_limit) 
         ## decompose data into S, R and C components using the current C latencies
         evts_with_c = sort(vcat(evts, evts_c), [:latency])
         s_erp, r_erp, c_erp, residue = unfold_decomposition(data_reshaped, evts_with_c)
@@ -114,7 +127,7 @@ function ride_algorithm_unfold(data, evts, cfg::ride_config)
         ## update C latencies via pattern matching
         c_latencies, evts_c = unfold_pattern_matching(residue, c_erp, evts_s, cfg)
         ##
-        
+
         ## add plots
         push!(figures_latency, plot_c_latency_estimation_four_epochs(data_epoched, c_latencies))
         push!(figures_erp, plot_data_plus_component_erp(data_epoched, evts_s, evts_r, reshape(s_erp,(1,:,1)), reshape(r_erp,(1,:,1)), reshape(c_erp,(1,:,1)), c_latencies, cfg))

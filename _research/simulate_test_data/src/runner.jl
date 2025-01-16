@@ -6,7 +6,9 @@ using .Ride
 
 #simulate data
 begin 
-    data, evts, data_clean, evts_clean, data_clean_s, data_clean_r, data_clean_c = simulate_default_plus_clean()
+    sim_inputs = simulation_inputs()
+    sim_inputs.noise = PinkNoise(; noiselevel = 1)
+    data, evts, data_clean, evts_clean, data_clean_s, data_clean_r, data_clean_c = simulate_default_plus_clean(sim_inputs)
     plot_first_three_epochs_of_raw_data(data_clean_s, evts);
     plot_first_three_epochs_of_raw_data(data, evts);
 end
@@ -72,13 +74,3 @@ begin
     display(f)
     save("actual_erps.png", f)
 end
-
-#import data from hdf5. Created for use with the sample data exported from matlab
-function import_data_from_hdf5(file_path)
-    data = h5read(file_path, "/dataset_data")
-    rt = h5read(file_path, "/dataset_rt")
-
-    return data, rt
-end
-
-#data_import, rt = import_data_from_hdf5("matlab_ride_samp_face.h5")

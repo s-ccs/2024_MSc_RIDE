@@ -19,6 +19,7 @@ using DSP
     c_estimation_range::Vector{Float64}
     epoch_range::Vector{Float64}
     epoch_event_name::Char
+    iteration_limit::Int = 5
 end
 
 function ride_algorithm(data, evts, cfg::ride_config)  
@@ -75,9 +76,8 @@ function ride_algorithm(data, evts, cfg::ride_config)
     figures_erp = Array{Figure,1}()
     push!(figures_erp, plot_data_plus_component_erp(data_epoched, evts_s, evts_r, s_erp_temp, r_erp_temp, c_erp_temp, c_latencies, cfg))
      
-    iteration_limit = 5
     #outer iteration RIDE
-    for i in 1:iteration_limit
+    for i in 1:cfg.iteration_limit
         #inner iteration RIDE
         for j in 1:25
             #calculate erp of C by subtracting S and R from the data

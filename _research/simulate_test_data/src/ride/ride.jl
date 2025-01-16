@@ -9,5 +9,4 @@ includet("./ride_algorithm_unfold.jl")
 includet("./plotting_methods.jl")
 includet("./helper_methods.jl")
 
-
 end

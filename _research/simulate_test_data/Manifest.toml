@@ -478,15 +478,15 @@ version = "0.4.3"
 
 [[deps.Dierckx]]
 deps = ["Dierckx_jll"]
-git-tree-sha1 = "d1ea9f433781bb6ff504f7d3cb70c4782c504a3a"
+git-tree-sha1 = "7da4b14cc4c3443a1afc64abee17f4fcb45ad837"
 uuid = "39dd38d3-220a-591b-8e3c-4c3a8c710a94"
-version = "0.5.3"
+version = "0.5.4"
 
 [[deps.Dierckx_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl"]
-git-tree-sha1 = "aa436932a26fba2219d92380fe33afe78c6a535d"
+git-tree-sha1 = "3251f44b3cac6fec4cec8db45d3ab0bfed51c4d8"
 uuid = "cd4c43a9-7502-52ba-aa6d-59fb2a88580b"
-version = "0.1.1+0"
+version = "0.2.0+0"
 
 [[deps.DiffResults]]
 deps = ["StaticArraysCore"]
@@ -1047,9 +1047,9 @@ version = "1.0.0"
 
 [[deps.JLD2]]
 deps = ["FileIO", "MacroTools", "Mmap", "OrderedCollections", "PrecompileTools", "Requires", "TranscodingStreams"]
-git-tree-sha1 = "f1a1c1037af2a4541ea186b26b0c0e7eeaad232b"
+git-tree-sha1 = "91d501cb908df6f134352ad73cde5efc50138279"
 uuid = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
-version = "0.5.10"
+version = "0.5.11"
 
 [[deps.JLLWrappers]]
 deps = ["Artifacts", "Preferences"]
@@ -1694,9 +1694,9 @@ version = "0.1.2"
 
 [[deps.Polynomials]]
 deps = ["LinearAlgebra", "OrderedCollections", "RecipesBase", "Requires", "Setfield", "SparseArrays"]
-git-tree-sha1 = "adc25dbd4d13f148f3256b6d4743fe7e63a71c4a"
+git-tree-sha1 = "27f6107dc202e2499f0750c628a848ce5d6e77f5"
 uuid = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
-version = "4.0.12"
+version = "4.0.13"
 
     [deps.Polynomials.extensions]
     PolynomialsChainRulesCoreExt = "ChainRulesCore"
@@ -2252,9 +2252,9 @@ weakdeps = ["StatsBase"]
 
 [[deps.TopoPlots]]
 deps = ["CloughTocher2DInterpolation", "Delaunator", "Dierckx", "GeometryBasics", "InteractiveUtils", "LinearAlgebra", "Makie", "NaturalNeighbours", "Parameters", "PrecompileTools", "ScatteredInterpolation", "Statistics"]
-git-tree-sha1 = "89f8eb46eea37db75a1931aacb8c425061e549cd"
+git-tree-sha1 = "a32bc76a67769d74b1f3d3548b8e3b8e4840cbde"
 uuid = "2bdbdf9c-dbd8-403f-947b-1a4e0dd41a7a"
-version = "0.2.1"
+version = "0.2.2"
 
 [[deps.TranscodingStreams]]
 git-tree-sha1 = "0c45878dcfdcfa8480052b6ab162cdd138781742"
@@ -2294,29 +2294,27 @@ version = "1.0.2"
 
 [[deps.Unfold]]
 deps = ["DSP", "DataFrames", "Distributions", "DocStringExtensions", "Effects", "FileIO", "GLM", "ImageTransformations", "Interpolations", "IterativeSolvers", "JLD2", "LinearAlgebra", "Logging", "MLBase", "Missings", "OrderedCollections", "PooledArrays", "ProgressMeter", "Random", "SimpleTraits", "SparseArrays", "StaticArrays", "Statistics", "StatsBase", "StatsFuns", "StatsModels", "Tables", "Term", "TimerOutputs", "TypedTables"]
-git-tree-sha1 = "77398c97f45fb7fa8ddf2cced4eeee50be605f6e"
+git-tree-sha1 = "81495a6412653430f8d6ab627586df492952f379"
 uuid = "181c99d8-e21b-4ff3-b70b-c233eddec679"
-version = "0.7.9"
+version = "0.8.1"
 
     [deps.Unfold.extensions]
     UnfoldBSplineKitExt = "BSplineKit"
     UnfoldCUDAExt = "CUDA"
     UnfoldKrylovExt = ["Krylov", "CUDA"]
-    UnfoldMixedModelsExt = "MixedModels"
     UnfoldRobustModelsExt = "RobustModels"
 
     [deps.Unfold.weakdeps]
     BSplineKit = "093aae92-e908-43d7-9660-e50ee39d5a0a"
     CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
     Krylov = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
-    MixedModels = "ff71e718-51f3-5ec2-a782-8ffcbfa3c316"
     RobustModels = "d6ea1423-9682-4bbd-952f-b1577cbf8c98"
 
 [[deps.UnfoldMakie]]
 deps = ["AlgebraOfGraphics", "BSplineKit", "CategoricalArrays", "ColorSchemes", "ColorTypes", "Colors", "CoordinateTransformations", "DataFrames", "DataStructures", "DocStringExtensions", "GeometryBasics", "GridLayoutBase", "ImageFiltering", "Interpolations", "LinearAlgebra", "Makie", "MakieThemes", "SparseArrays", "StaticArrays", "Statistics", "TopoPlots", "Unfold"]
-git-tree-sha1 = "ec86776f8b185d9fac0312e93c3bea9b0f6811af"
+git-tree-sha1 = "baf3e5ebb6863b373bcf7a830d2f9dd66b59df6f"
 uuid = "69a5ce3b-64fb-4f22-ae69-36dd4416af2a"
-version = "0.5.11"
+version = "0.5.12"
 
     [deps.UnfoldMakie.extensions]
     UnfoldMakiePyMNEExt = "PyMNE"
@@ -2491,9 +2489,9 @@ version = "1.6.45+1"
 
 [[deps.libsixel_jll]]
 deps = ["Artifacts", "JLLWrappers", "JpegTurbo_jll", "Libdl", "libpng_jll"]
-git-tree-sha1 = "bf6bb896bd59692d1074fd69af0e5a1b64e64d5e"
+git-tree-sha1 = "c1733e347283df07689d71d61e14be986e49e47a"
 uuid = "075b6546-f08a-558a-be8f-8157d0f608a5"
-version = "1.10.4+1"
+version = "1.10.5+0"
 
 [[deps.libvorbis_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Ogg_jll", "Pkg"]
