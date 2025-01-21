@@ -22,7 +22,7 @@ using DSP
     iteration_limit::Int = 5
 end
 
-function ride_algorithm(data, evts, cfg::ride_config)  
+function ride_algorithm(data, evts, cfg::ride_config, Modus::Type{ride_original})
 
     #todo: define the reaction times as a separate input parameter instead of as part of the evts table
     #todo: change the data input format to somewhat match the ride input format

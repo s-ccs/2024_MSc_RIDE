@@ -1,3 +1,9 @@
+abstract type ride_modus end
+
+struct ride_original <: ride_modus end
+
+struct ride_unfold <: ride_modus end
+
 function pad_erp_to_epoch_size(erp, component_range, median_latency, cfg)
     epoch_length = round(Int, (cfg.epoch_range[2] - cfg.epoch_range[1]) * cfg.sfreq)
     padding_front = zeros(Float64, 1, max(round(Int, median_latency + (component_range[1] * cfg.sfreq) - (cfg.epoch_range[1] * cfg.sfreq)), 0), 1)

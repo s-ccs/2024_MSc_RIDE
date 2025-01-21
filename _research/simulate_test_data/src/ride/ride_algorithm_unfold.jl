@@ -51,7 +51,7 @@ function latency_estimation(d, evts_s, cfg)
     return c_latencies, evts_c
 end
 
-function ride_algorithm_unfold(data, evts, cfg::ride_config)
+function ride_algorithm(data, evts, cfg::ride_config, Modus::Type{ride_unfold})
     ## data_preparation
     data_reshaped = reshape(data, (1,:))
     evts_s = @subset(evts, :event .== 'S')
