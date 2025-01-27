@@ -53,13 +53,17 @@ begin
         s_range = [0, 250],
         r_range = [-150, 150],
         c_range = [-200, 200],
-        c_estimation_range = [50, 450],
+        c_estimation_range = [0, 400],
         epoch_range = [-49,500],
-        epoch_event_name = 'S'
+        epoch_event_name = 'S',
+        iteration_limit = 5,
+        heuristic1 = true,
+        heuristic2 = true,
+        heuristic3 = true
     )
 
     #run the ride algorithm
-    c_latencies, s_erp, c_erp, r_erp = ride_algorithm(data, evts, cfg, ride_unfold)
+    c_latencies, s_erp, c_erp, r_erp = ride_algorithm(data, evts, cfg, ride_original)
 end
 
 

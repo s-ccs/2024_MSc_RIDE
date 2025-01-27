@@ -21,9 +21,13 @@ begin
         s_range = [-0.2, 0.4],
         r_range = [0, 0.8],
         c_range = [-0.4, 0.4], # change to -0.4 , 0.4 or something because it's attached to the latency of C
-        c_estimation_range = [0.2, 1.2],
+        c_estimation_range = [-0.1, 0.9],
         epoch_range = [-0.3,1.6],
-        epoch_event_name = 'S'
+        epoch_event_name = 'S',
+        iteration_limit = 5,
+        heuristic1 = true,
+        heuristic2 = true,
+        heuristic3 = true
     )
 
     cfg2 = deepcopy(cfg)
@@ -36,7 +40,7 @@ begin
     evts_without_c = @subset(evts, :event .!= 'C')
 
     #run the ride algorithm
-    c_latencies, s_erp, c_erp, r_erp = ride_algorithm_unfold(data, evts_without_c, cfg, ride_unfold)
+    c_latencies, s_erp, c_erp, r_erp = ride_algorithm(data, evts_without_c, cfg, ride_original)
 end
 
 # calculate and plot clean erps from the simulated data
