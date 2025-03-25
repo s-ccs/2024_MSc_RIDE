@@ -1,0 +1,203 @@
+Brain Vision Data Exchange Header File Version 2.0
+; Data created from history path: Suse_Coil_final/Raw Data/Edit Channels-T8/New Reference 2/Raw Data Inspection/Filters/Segmentation/Move Markers/Segmentation/OcularCorrection/Baseline Correction_PO
+
+[Common Infos]
+Codepage=UTF-8
+DataFile=Coil_new_seg_new_ref.eeg
+MarkerFile=Coil_new_seg_new_ref.vmrk
+DataFormat=BINARY
+; Data orientation: VECTORIZED=ch1,pt1, ch1,pt2..., MULTIPLEXED=ch1,pt1, ch2,pt1 ...
+DataOrientation=MULTIPLEXED
+DataType=TIMEDOMAIN
+NumberOfChannels=79
+DataPoints=262680
+; Sampling interval in microseconds if time domain (convert to Hertz:
+; 1000000 / SamplingInterval) or in Hertz if frequency domain:
+SamplingInterval=5000
+SegmentationType=MARKERBASED
+SegmentDataPoints=440
+
+[User Infos]
+; Each entry: Prop<Number>=<Type>,<Name>,<Value>,<Value2>,...,<ValueN>
+; Property number must be unique. Types can be int, single, string, bool, byte, double, uint
+; or arrays of those, indicated int-array etc
+; Array types have more than one value, number of values determines size of array.
+; Fields are delimited by commas, commas in strings are written \1
+
+[Binary Infos]
+BinaryFormat=IEEE_FLOAT_32
+
+[Channel Infos]
+; Each entry: Ch<Channel number>=<Name>,<Reference channel name>,
+; <Resolution in "Unit">,<Unit>, Future extensions...
+; Fields are delimited by commas, some fields might be omitted (empty).
+; Commas in channel names are coded as "\1".
+Ch1=Fp1,avg,,µV
+Ch2=Fpz,avg,,µV
+Ch3=Fp2,avg,,µV
+Ch4=AF7,avg,,µV
+Ch5=AF3,avg,,µV
+Ch6=AFz,avg,,µV
+Ch7=AF4,avg,,µV
+Ch8=AF8,avg,,µV
+Ch9=F9,avg,,µV
+Ch10=F7,avg,,µV
+Ch11=F5,avg,,µV
+Ch12=F3,avg,,µV
+Ch13=Fz,avg,,µV
+Ch14=F4,avg,,µV
+Ch15=F6,avg,,µV
+Ch16=F8,avg,,µV
+Ch17=F10,avg,,µV
+Ch18=FT7,avg,,µV
+Ch19=FC5,avg,,µV
+Ch20=FC3,avg,,µV
+Ch21=FC1,avg,,µV
+Ch22=FC2,avg,,µV
+Ch23=FC4,avg,,µV
+Ch24=FC6,avg,,µV
+Ch25=FT8,avg,,µV
+Ch26=T7,avg,,µV
+Ch27=C5,avg,,µV
+Ch28=C3,avg,,µV
+Ch29=C1,avg,,µV
+Ch30=Cz,avg,,µV
+Ch31=C2,avg,,µV
+Ch32=C4,avg,,µV
+Ch33=C6,avg,,µV
+Ch34=TP9,avg,,µV
+Ch35=TP7,avg,,µV
+Ch36=CP5,avg,,µV
+Ch37=CP3,avg,,µV
+Ch38=CP1,avg,,µV
+Ch39=CPz,avg,,µV
+Ch40=CP2,avg,,µV
+Ch41=CP4,avg,,µV
+Ch42=CP6,avg,,µV
+Ch43=TP8,avg,,µV
+Ch44=TP10,avg,,µV
+Ch45=P7,avg,,µV
+Ch46=P5,avg,,µV
+Ch47=P3,avg,,µV
+Ch48=Pz,avg,,µV
+Ch49=P4,avg,,µV
+Ch50=P6,avg,,µV
+Ch51=P8,avg,,µV
+Ch52=PO9,avg,,µV
+Ch53=PO7,avg,,µV
+Ch54=PO3,avg,,µV
+Ch55=POz,avg,,µV
+Ch56=PO4,avg,,µV
+Ch57=PO8,avg,,µV
+Ch58=mikro,,,µV
+Ch59=O1,avg,,µV
+Ch60=Oz,avg,,µV
+Ch61=O2,avg,,µV
+Ch62=Mastoid,avg,,µV
+Ch63=Auge_u,,,µV
+Ch64=LL_FrontBack,,,unit
+Ch65=TD_FrontBack,,,unit
+Ch66=TB_FrontBack,,,unit
+Ch67=TT_FrontBack,,,unit
+Ch68=UL_FrontBack,,,unit
+Ch69=LL_LeftRight,,,unit
+Ch70=TD_LeftRight,,,unit
+Ch71=TB_LeftRight,,,unit
+Ch72=TT_LeftRight,,,unit
+Ch73=UL_LeftRight,,,unit
+Ch74=LL_UpDwn,,,unit
+Ch75=TD_UpDwn,,,unit
+Ch76=TB_UpDwn,,,unit
+Ch77=TT_UpDwn,,,unit
+Ch78=UL_UpDwn,,,unit
+Ch79=A1,avg,,µV
+
+[Channel User Infos]
+; Each entry: Prop<Number>=Ch<ChannelNumber>,<Type>,<Name>,<Value>,<Value2>,...,<ValueN>
+; Property number must be unique. Types can be int, single, string, bool, byte, double, uint
+; or arrays of those, indicated int-array etc
+; Array types have more than one value, number of values determines size of array.
+; Fields are delimited by commas, commas in strings are written \1
+; Properties are assigned to channels using their channel number.
+
+[Coordinates]
+; Each entry: Ch<Channel number>=<Radius>,<Theta>,<Phi>
+Ch1=1,-90,-72
+Ch2=1,90,90
+Ch3=1,90,72
+Ch4=1,-90,-54
+Ch5=1,-74,-68
+Ch6=1,67,90
+Ch7=1,74,68
+Ch8=1,90,54
+Ch9=1,-113,-36
+Ch10=1,-90,-36
+Ch11=1,-74,-41
+Ch12=1,-60,-51
+Ch13=1,45,90
+Ch14=1,60,51
+Ch15=1,74,41
+Ch16=1,90,36
+Ch17=1,113,36
+Ch18=1,-90,-18
+Ch19=1,-69,-21
+Ch20=1,-49,-29
+Ch21=1,-31,-46
+Ch22=1,31,46
+Ch23=1,49,29
+Ch24=1,69,21
+Ch25=1,90,18
+Ch26=1,-90,0
+Ch27=1,-68,0
+Ch28=1,-45,0
+Ch29=1,-23,0
+Ch30=1,0,0
+Ch31=1,23,0
+Ch32=1,45,0
+Ch33=1,68,0
+Ch34=1,-113,18
+Ch35=1,-90,18
+Ch36=1,-69,21
+Ch37=1,-49,29
+Ch38=1,-31,46
+Ch39=1,22,-90
+Ch40=1,31,-46
+Ch41=1,49,-29
+Ch42=1,69,-21
+Ch43=1,90,-18
+Ch44=1,113,-18
+Ch45=1,-90,36
+Ch46=1,-74,41
+Ch47=1,-60,51
+Ch48=1,45,-90
+Ch49=1,60,-51
+Ch50=1,74,-41
+Ch51=1,90,-36
+Ch52=1,-113,54
+Ch53=1,-90,54
+Ch54=1,-74,68
+Ch55=1,67,-90
+Ch56=1,74,-68
+Ch57=1,90,-54
+Ch58=0,0,0
+Ch59=1,-90,72
+Ch60=1,90,-90
+Ch61=1,90,-72
+Ch62=0,0,0
+Ch63=0,0,0
+Ch64=0,0,0
+Ch65=0,0,0
+Ch66=0,0,0
+Ch67=0,0,0
+Ch68=0,0,0
+Ch69=0,0,0
+Ch70=0,0,0
+Ch71=0,0,0
+Ch72=0,0,0
+Ch73=0,0,0
+Ch74=0,0,0
+Ch75=0,0,0
+Ch76=0,0,0
+Ch77=0,0,0
+Ch78=0,0,0
+Ch79=1,-129,0
