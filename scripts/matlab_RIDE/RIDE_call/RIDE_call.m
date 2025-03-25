@@ -264,7 +264,7 @@ for section = 1:1 %RIDE iteration
 
                            temp = round(temp-median(temp)); %covert the C latencies to relative values by subtracting the median
 
-                            %Till: Heuristic 1, stop updates on non monoton latency evolution
+                           %Till: Heuristic 1, stop updates on non monoton latency evolution
                            %tack the latency evolution and correlation values (if the evolution returns, then stop updating)   
                            if iter>1
                                 for j = 1:d3
